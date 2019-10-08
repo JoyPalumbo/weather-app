@@ -87,7 +87,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App" >
-        <header className="App-header">
+        <body className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1>Joy's Weather App</h1>
           <a
@@ -98,8 +98,8 @@ class App extends React.Component {
           >
 
           </a>
-        </header>
-        <body>
+
+
           <form onSubmit={this.handleSubmit}>
             <label>
               Location:
