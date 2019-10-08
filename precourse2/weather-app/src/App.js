@@ -1,5 +1,5 @@
 import React from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 // import { geolocated, geoPropTypes } from "react-geolocated";
@@ -13,23 +13,36 @@ import './App.css';
 
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = { location: '' };
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: '',
+      description: 'cloudy',
+      temp: 75
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  // handleChange(event) {
-  //   this.setState({ location: event.target.value });
-  // }
-  // // function App() {
-  // handleSubmit(event) {
-  //   //This prevents page from re-loading when clicked
-  //   event.preventDefault();
-  //   const data = new FormData();
-  //   data.append('location', event.target);
-  // Access FormData fields with `data.get(fieldName)`
+  handleChange(location) {
+    this.setState({ location: location.target.value });
+    // console.log(location.target.value);
+  }
+  // function App() {
+  handleSubmit(event) {
+    //This prevents page from re-loading when clicked
+    event.preventDefault();
+    // console.log(event);
+    const { target: { value } } = event;
+
+    // And do whatever you need with it's value, for example change state 
+    this.setState({ location: value });
+    // const data = new FormData();
+    // data.append('location', location.target);
+    console.log('clicked successfully');
+    // console.log(data);
+    // Access FormData fields with `data.get(fieldName)`
+  }
 
   // function handleClick(e) {
   //   this.setState({ input: e.target.value })
@@ -44,17 +57,19 @@ class App extends React.Component {
   //   console.log("clicked successfully");
   // }
 
+  async componentDidMount() {
+    let API = "https://cors-anywhere.herokuapp.com/fcc-weather-api.glitch.me/api/current?lon=118.2437&lat=34.0522";
+    const response = await fetch(API);
+    const data = await response.json();
+    this.setState({ description: data.weather[0].description });
+    console.log(data);
+    // let weather = API.get('/', {
+    //   main description: "",
+    //   temp: 0,
+    //   img: ''
+  };
 
 
-
-
-  // async componentDidMount() {
-  //   let weather = API.get('/', {
-  //     main description: "",
-  //     temp: 0,
-  //     img: ''
-  //   })
-  // }
 
   //     // Parse the results for ease of use.
   // userData = userData.data.results[0];
@@ -97,6 +112,7 @@ class App extends React.Component {
           <button onClick={this.handleSubmit}>
             Click me!
     </button>
+          <div id="weather">{this.state.description}</div>
         </body>
       </div>
     );
