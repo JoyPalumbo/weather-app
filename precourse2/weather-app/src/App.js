@@ -4,6 +4,7 @@ import './App.css';
 
 //input box for location
 //api key/end point
+//access image from json file at weather[0].icon
 
 
 function App() {
@@ -21,6 +22,15 @@ function App() {
 
         </a>
       </header>
+      <body>
+        <form>
+          <label>
+            Location:
+            <input type="text" location="location" />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      </body>
     </div>
   );
 }
