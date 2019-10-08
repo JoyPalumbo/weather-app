@@ -2,7 +2,9 @@ import React from 'react';
 // import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-import { geolocated, geoPropTypes } from "react-geolocated";
+// import { geolocated, geoPropTypes } from "react-geolocated";
+
+// var api = https://fcc-weather-api.glitch.me/
 
 //input box for location
 //api key/end point
@@ -83,6 +85,18 @@ class App extends React.Component {
           </a>
         </header>
         <body>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Location:
+            <input type="text" location={this.state.location} onChange={this.handleChange} />
+            </label>
+            {/* //When I do it this way it rerenders after every click */}
+            {/* <input type="submit" value="Submit" onClick={handleSubmit} /> */}
+          </form>
+          {/* When I do the button on click it does not re-render */}
+          <button onClick={this.handleSubmit}>
+            Click me!
+    </button>
         </body>
       </div>
     );
