@@ -1,7 +1,8 @@
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import moment from 'moment';
 // import { geolocated, geoPropTypes } from "react-geolocated";
 
 // var api = https://fcc-weather-api.glitch.me/
@@ -34,10 +35,8 @@ class App extends React.Component {
   }
 
   getWeather = async (latitude, longitude) => {
-    const API = await
-      fetch(`"https://cors-anywhere.herokuapp.com/fcc-weather-api.glitch.me/api/current?lon=${longitude}&lat=${latitude}`);
+    const API = await fetch(`//api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=301a5f02ab435c9dcd29263f8ae55d3c&units=metric`);
     const data = await API.json();
-    console.log('data is: ', data);
     this.setState({
       // lat and long may be data.coord.lat/lon
       lat: latitude,
@@ -47,7 +46,7 @@ class App extends React.Component {
       tempC: Math.round(data.main.temp),
       tempF: Math.round(data.main.temp * 1.8 + 32),
       icon: data.weather[0].icon,
-      description: data.weather.description,
+      description: data.weather[0].main,
     })
   }
 
@@ -59,25 +58,33 @@ class App extends React.Component {
       .catch((err) => {
         this.setState({ errorMessage: err.messsage });
       });
+  }
 
-
-    render() {
+  render() {
+    const { city, tempC, tempF, icon, description } = this.state;
+    if (city) {
       return (
         <div className="App" >
           <body className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <h1>Joy's Weather App</h1>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-            </a>
+            <div className="weather-item">{city}</div>
+            <div className="weather-item">{tempC} &deg;C <span className="slack">/</span>{tempF} &deg;F</div>
+            <div>
+              <img className="weather-icon" src={`http://openweathermap.org/img/w/${icon}.png`} alt="weather icon" />
+            </div>
+            <div className="weatjher-item">
+              <span>Weather: {description}</span>
+            </div>
           </body>
         </div>
       );
     }
+    else {
+      return (
+        <div>Loading...</div>
+      )
+    }
   }
-
-  export default App;
+}
+export default App;
