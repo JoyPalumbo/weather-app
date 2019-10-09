@@ -16,9 +16,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: '',
+      lat: undefined,
+      lon: undefined,
+      city: undefined,
+      tempC: undefined,
+      tempF: undefined,
+      icon: undefined,
       description: 'cloudy',
-      temp: 75
+      errorMessage: undefined,
     };
   }
 
@@ -28,32 +33,51 @@ class App extends React.Component {
     });
   }
 
-  async componentDidMount() {
-    let API = "https://cors-anywhere.herokuapp.com/fcc-weather-api.glitch.me/api/current?lon=118.2437&lat=34.0522";
-    const response = await fetch(API);
-    const data = await response.json();
-    this.setState({ description: data.weather[0].description, temp: data.main.temp });
-    console.log(data);
-  };
-
-
-  render() {
-    return (
-      <div className="App" >
-        <body className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>Joy's Weather App</h1>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          </a>
-        </body>
-      </div>
-    );
+  getWeather = async (latitude, longitude) => {
+    const API = await
+      fetch(`"https://cors-anywhere.herokuapp.com/fcc-weather-api.glitch.me/api/current?lon=${longitude}&lat=${latitude}`);
+    const data = await API.json();
+    console.log('data is: ', data);
+    this.setState({
+      // lat and long may be data.coord.lat/lon
+      lat: latitude,
+      lon: longitude,
+      //will need to change city, tempC, tempF data
+      city: data.name,
+      tempC: Math.round(data.main.temp),
+      tempF: Math.round(data.main.temp * 1.8 + 32),
+      icon: data.weather[0].icon,
+      description: data.weather.description,
+    })
   }
-}
 
-export default App;
+  componentDidMount() {
+    this.getPosition()
+      .then((position) => {
+        this.getWeather(position.coords.latitude, position.coords.longitude)
+      })
+      .catch((err) => {
+        this.setState({ errorMessage: err.messsage });
+      });
+
+
+    render() {
+      return (
+        <div className="App" >
+          <body className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1>Joy's Weather App</h1>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+            </a>
+          </body>
+        </div>
+      );
+    }
+  }
+
+  export default App;
