@@ -1,8 +1,9 @@
 import React from 'react';
 // import axios from 'axios';
-import logo from './logo.svg';
+import logo from './cuteCloud.jpg';
+// import logo from './logo.svg';
 import './App.css';
-import moment from 'moment';
+
 // import { geolocated, geoPropTypes } from "react-geolocated";
 
 // var api = https://fcc-weather-api.glitch.me/
